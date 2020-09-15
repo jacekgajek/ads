@@ -16,6 +16,8 @@ class AdsController(private val service: AdsService) {
              @RequestParam(required = false) groupBy: List<String>?,
              @RequestParam(required = false) sum: List<String>?,
              @RequestParam(required = false) max: List<String>?,
+             @RequestParam(required = false) min: List<String>?,
+             @RequestParam(required = false) count: List<String>?,
              @RequestParam(required = false) avg: List<String>?,
             @RequestParam(required = false) custom: List<String>?
     ): ResponseEntity<List<Any>> {
@@ -30,6 +32,8 @@ class AdsController(private val service: AdsService) {
                             groupBy = convert(groupBy),
                             sum = convert(sum),
                             avg = convert(avg),
+                            min = convert(min),
+                            count = convert(count),
                             max = convert(max),
                             custom = custom.orEmpty()
                     )

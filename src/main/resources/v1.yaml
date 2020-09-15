@@ -1,0 +1,69 @@
+swagger: "2.0"
+info:
+  title: Simple Data Warehouse
+  description: simple backend application that exposes data
+  version: 1.0.1
+host: localhost:8080
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /ads:
+    get:
+      summary: Returns data specified by query parameters
+      description: "Accessible fields are: clicks, impressions, campaign, dataSource, daily. Names are not case-sensitive"
+      parameters:
+        - in: query
+          name: select
+          type: string
+          required: false
+          description: comma-separated list of fields to include in the result. Eg select=datasource,campaign
+        - in: query
+          name: filter
+          type: string
+          required: false
+          description: filtering expression in the RSQL query language. Note double equals symbol for equality check. Eg. filter=daily>'2020-01-01' and daily<'2020-02-01' and datasource=='Google Ads'
+        - in: query
+          name: groupBy
+          type: string
+          required: false
+          description: comma-separated list of fields to group on. Standard SQL aggregation rules are applied.
+        - in: query
+          name: sum
+          type: string
+          required: false
+          description: comma-separated list of fields to calculate a sum in a grouping query. This will be calculated on the database level (fast).
+        - in: query
+          name: min
+          type: string
+          required: false
+          description: comma-separated list of fields to calculate a minimum in a grouping query. This will be calculated on the database level (fast).
+        - in: query
+          name: count
+          type: string
+          required: false
+          description: comma-separated list of fields to calculate COUNT in a grouping query. This will be calculated on the database level (fast).
+        - in: query
+          name: avg
+          type: string
+          required: false
+          description: comma-separated list of fields to calculate an average in a grouping query. This will be calculated on the database level (fast).
+        - in: query
+          name: max
+          type: string
+          required: false
+          description: comma-separated list of fields to calculate a maximum in a grouping query. This will be calculated on the database level (fast).
+        - in: query
+          name: custom
+          type: string
+          required: false
+          description: comma-separated list of custom mathematical expressions to evaluate.
+            All fields and aggregations are accessible as variables (eg. impressions, sum_clicks).
+            This will be calculated in post-processing, after SQL query result is fetched from the database (potentially slower).
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+        400:
+          description: invalid query parameters

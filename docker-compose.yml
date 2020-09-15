@@ -10,9 +10,3 @@ services:
       - POSTGRES_PASSWORD=superdevs
     ports:
     - '5432:5432'
-#  mongodb:
-#    container_name: mongodb
-#    restart: on-failure
-#    image: library/mongo:4.4.0
-#    ports:
-#      - "27017:27017"
