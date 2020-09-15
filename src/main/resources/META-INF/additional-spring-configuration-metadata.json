@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "com.jacekgajek.superdevs.initfile",
+      "type": "java.lang.String",
+      "description": "Path to init data CSV file."
+    }
+  ] }

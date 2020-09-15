@@ -1,0 +1,13 @@
+GET http://localhost:8080/api/v1/ads?select=campaign&groupBy=campaign&sum=clicks&filter=daily>'2020-01-01'
+
+###
+GET http://localhost:8080/api/v1/ads?select=dataSource,campaign&groupBy=dataSource,campaign&sum=clicks&filter=daily>'2020-01-01' and dataSource=='Google Ads' and daily<'2020-02-12'
+
+###
+GET http://localhost:8080/api/v1/ads?select=daily&groupBy=daily&sum=impressions
+
+###
+GET http://localhost:8080/api/v1/ads?select=datasource,campaign&groupBy=datasource,campaign&sum=clicks,impressions&custom=sum_clicks/sum_impressions*campaign
+
+###
+GET http://localhost:8080/api/v1/ads?select=daily&sum=clicks,impressions&groupBy=daily&filter=daily>'2020-01-01' and daily<'2020-02-12'&custom=sum_clicks/sum_impressions
