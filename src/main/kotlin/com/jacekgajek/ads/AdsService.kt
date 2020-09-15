@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service
 import java.io.FileReader
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import javax.annotation.PostConstruct
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceException
 import javax.persistence.criteria.CriteriaBuilder
@@ -47,6 +46,7 @@ class AdsService(private val repo: AdsRepository,
 
 
     fun query(p: QueryParams): List<Any> {
+        loadSampleDataIfDbIsEmpty()
         val criteriaBuilder = en.criteriaBuilder
 
         val builder = QueryBuilder(p, criteriaBuilder)
@@ -103,8 +103,7 @@ class AdsService(private val repo: AdsRepository,
         }
     }
 
-    @PostConstruct
-    private fun loadSampleData() {
+    private fun loadSampleDataIfDbIsEmpty() {
         // Datasource,Campaign,Daily,Clicks,Impressions
         if (repo.count() == 0L) {
             log.info("Database empty, loading sample data from $initFile.")
