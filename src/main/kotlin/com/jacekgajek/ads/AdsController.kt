@@ -20,12 +20,11 @@ class AdsController(private val service: AdsService) {
             @RequestParam(required = false) custom: List<String>?
     ): ResponseEntity<List<Any>> {
         try {
-
             val convert = {
                 list: List<String>? -> list?.map { AdsService.Fields.valueOfCaseInsensitive(it) }.orEmpty()
             }
-            val result =service.getAll(
-                    AdsService.GetAllParams(
+            val result =service.query(
+                    AdsService.QueryParams(
                             select = convert(select),
                             rsqlFilter = filter,
                             groupBy = convert(groupBy),

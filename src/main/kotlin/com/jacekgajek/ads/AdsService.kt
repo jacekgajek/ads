@@ -22,16 +22,16 @@ class AdsService(private val repo: AdsRepository,
                  private val en: EntityManager) {
     private val log = LoggerFactory.getLogger(AdsService::class.java)
 
-    data class GetAllParams(val select: List<Fields>,
-                            val rsqlFilter: String = "",
-                            val groupBy: List<Fields>,
-                            val sum: List<Fields>,
-                            val avg: List<Fields>,
-                            val max: List<Fields>,
-                            val custom: List<String>
+    data class QueryParams(val select: List<Fields>,
+                           val rsqlFilter: String = "",
+                           val groupBy: List<Fields>,
+                           val sum: List<Fields>,
+                           val avg: List<Fields>,
+                           val max: List<Fields>,
+                           val custom: List<String>
     )
 
-    fun getAll(p: GetAllParams): List<Any> {
+    fun query(p: QueryParams): List<Any> {
         val criteriaBuilder = en.criteriaBuilder
         var query = criteriaBuilder.createQuery(Array<Any>::class.java)
         val root = query.from(AdRecord::class.java)
@@ -50,7 +50,7 @@ class AdsService(private val repo: AdsRepository,
         query = query.multiselect(selections)
         if (p.rsqlFilter.isNotEmpty()) {
             try {
-                val predicate = RSQLJPASupport.toSpecification<AdRecord>(p.rsqlFilter).toPredicate(root, query, criteriaBuilder)
+                val predicate = RSQLJPASupport.toSpecification<AdRecord>(fixCasing(p.rsqlFilter)).toPredicate(root, query, criteriaBuilder)
                 query = query.where(predicate)
             } catch (ex: RSQLParserException) {
                 throw IllegalArgumentException("Filter expression invalid: ${ex.message}")
@@ -74,6 +74,16 @@ class AdsService(private val repo: AdsRepository,
         return resultList
     }
 
+    /**
+     * User can put either "dataSource", "DataSource", etc. in the filter expression - we don't want to care about it.
+     */
+    private fun fixCasing(rsqlFilter: String): String {
+        return Fields.values().fold(rsqlFilter) { filter: String, f: Fields -> filter.replace(f.name, f.name, true) }
+    }
+
+    /**
+     * Custom expressions are calculated outside database => worse performance
+     */
     private fun appendCustomExpressions(data: List<MutableMap<String, Any?>>, custom: List<String>) {
         if (custom.isEmpty()) return
         data.forEach { row ->
