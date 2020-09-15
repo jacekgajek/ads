@@ -123,14 +123,12 @@ class AdsService(private val repo: AdsRepository,
  */
 private class QueryBuilder(private val p: AdsService.QueryParams, private val criteriaBuilder: CriteriaBuilder) {
     private var query = criteriaBuilder.createQuery(Array<Any>::class.java)
-    private var built = false
     private val root = query.from(AdRecord::class.java)
 
     fun build(): Pair<CriteriaQuery<Array<Any>>, List<String>> {
         buildSelections()
         buildFilters()
         query = query.groupBy(p.groupBy.map { root.get<Any>(it.name) })
-        built = true
         return Pair(query, extractAliases())
     }
 
