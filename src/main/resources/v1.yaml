@@ -29,6 +29,13 @@ paths:
           required: false
           description: comma-separated list of fields to group on. Standard SQL aggregation rules are applied.
         - in: query
+          name: custom
+          type: string
+          required: false
+          description: comma-separated list of custom mathematical expressions to evaluate.
+            All fields and aggregations are accessible as variables (eg. impressions, sum_clicks).
+            This will be calculated in post-processing, after SQL query result is fetched from the database (potentially slower).
+        - in: query
           name: sum
           type: string
           required: false
@@ -53,13 +60,6 @@ paths:
           type: string
           required: false
           description: comma-separated list of fields to calculate a maximum in a grouping query. This will be calculated on the database level (fast).
-        - in: query
-          name: custom
-          type: string
-          required: false
-          description: comma-separated list of custom mathematical expressions to evaluate.
-            All fields and aggregations are accessible as variables (eg. impressions, sum_clicks).
-            This will be calculated in post-processing, after SQL query result is fetched from the database (potentially slower).
       produces:
         - application/json
       responses:

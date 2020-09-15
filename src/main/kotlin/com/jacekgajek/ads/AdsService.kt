@@ -20,7 +20,7 @@ import javax.persistence.criteria.Selection
 
 @Service
 class AdsService(private val repo: AdsRepository,
-                 @Value("\${com.jacekgajek.ads.initfile}") private val initFile: String,
+                 @Value("\${com.jacekgajek.ads.initFile}") private val initFile: String,
                  private val en: EntityManager) {
     private val log = LoggerFactory.getLogger(AdsService::class.java)
 
@@ -32,7 +32,8 @@ class AdsService(private val repo: AdsRepository,
                            val max: List<Fields>,
                            val min: List<Fields>,
                            val count: List<Fields>,
-                           val custom: List<String>
+                           val custom: List<String>,
+                           val exclude: List<String>
     )
 
     @Suppress("EnumEntryName")
@@ -64,7 +65,15 @@ class AdsService(private val repo: AdsRepository,
                                 .toTypedArray())
                 }
         appendCustomExpressions(resultList, p.custom)
+        excludeFields(resultList, p.exclude)
         return resultList
+    }
+
+    private fun excludeFields(resultList: List<MutableMap<String, Any?>>, exclude: List<String>) {
+        if (exclude.isEmpty()) return
+        resultList.forEach {
+            row -> exclude.forEach { row.remove(it) }
+        }
     }
 
     /**
@@ -98,7 +107,7 @@ class AdsService(private val repo: AdsRepository,
     private fun loadSampleData() {
         // Datasource,Campaign,Daily,Clicks,Impressions
         if (repo.count() == 0L) {
-            log.info("Database empty, loading sample data")
+            log.info("Database empty, loading sample data from $initFile.")
             CSVReader(FileReader(initFile)).use { reader ->
                 generateSequence(reader::readNext)
                         .drop(1)
@@ -121,7 +130,7 @@ class AdsService(private val repo: AdsRepository,
 /**
  * Interprets parameters in QueryParams and generates a CriteriaQuery.
  */
-private class QueryBuilder(private val p: AdsService.QueryParams, private val criteriaBuilder: CriteriaBuilder) {
+internal class QueryBuilder(private val p: AdsService.QueryParams, private val criteriaBuilder: CriteriaBuilder) {
     private var query = criteriaBuilder.createQuery(Array<Any>::class.java)
     private val root = query.from(AdRecord::class.java)
 
@@ -144,7 +153,7 @@ private class QueryBuilder(private val p: AdsService.QueryParams, private val cr
         selections.addAll(p.count.map { criteriaBuilder.count(root.get<Any>(it.name)).alias("count_${it.name}") })
 
         if (selections.isEmpty()) {
-            throw IllegalArgumentException("You have to specify at least one selection")
+            throw IllegalArgumentException("You have to specify at least one selection.")
         }
 
         query = query.multiselect(selections)

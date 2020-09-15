@@ -19,6 +19,7 @@ class AdsController(private val service: AdsService) {
              @RequestParam(required = false) min: List<String>?,
              @RequestParam(required = false) count: List<String>?,
              @RequestParam(required = false) avg: List<String>?,
+             @RequestParam(required = false) exclude: List<String>?,
              @RequestParam(required = false) custom: List<String>?
     ): ResponseEntity<List<Any>> {
         try {
@@ -35,7 +36,8 @@ class AdsController(private val service: AdsService) {
                             min = convert(min),
                             count = convert(count),
                             max = convert(max),
-                            custom = custom.orEmpty()
+                            custom = custom.orEmpty(),
+                            exclude = exclude.orEmpty()
                     )
             )
             return ResponseEntity.ok(result)

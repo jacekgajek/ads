@@ -1,7 +1,7 @@
 {
   "properties": [
     {
-      "name": "com.jacekgajek.ads.initfile",
+      "name": "com.jacekgajek.ads.initFile",
       "type": "java.lang.String",
       "description": "Path to init data CSV file."
     }
