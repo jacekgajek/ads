@@ -3,9 +3,6 @@
 ### Total Clicks for a given Datasource for a given Date range
 GET {{host}}/api/v1/ads?sum=clicks&groupBy=datasource&filter=daily>'2020-01-01' and daily<'2020-02-01' and datasource=='Google Ads'
 
-### Total Clicks for a given Datasource for a given Date range
-GET {{host}}/api/v1/ads?sum=clicks&groupBy=datasource&filter=daily>'2020-01-01' and daily<'2020-02-01' and datasource=='Google Ads'
-
 ### Click-Through Rate (CTR) per Datasource and CampaigN
 GET {{host}}/api/v1/ads?select=datasource,campaign&groupBy=datasource,campaign&sum=clicks,impressions&custom=sum_clicks/sum_impressions&exclude=sum_clicks,sum_impressions
 
