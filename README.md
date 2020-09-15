@@ -34,5 +34,5 @@ See `sample_requests.http` for examples.
 At the time of writing, app is deployed on heroku on https://mighty-bayou-95598.herokuapp.com
 
 Swagger UI:
-https://mighty-bayou-95598.herokuapp.com/swagger-ui/
+https://mighty-bayou-95598.herokuapp.com/swagger-ui.html
 
