@@ -19,7 +19,7 @@ class AdsController(private val service: AdsService) {
              @RequestParam(required = false) min: List<String>?,
              @RequestParam(required = false) count: List<String>?,
              @RequestParam(required = false) avg: List<String>?,
-            @RequestParam(required = false) custom: List<String>?
+             @RequestParam(required = false) custom: List<String>?
     ): ResponseEntity<List<Any>> {
         try {
             val convert = {
@@ -44,6 +44,4 @@ class AdsController(private val service: AdsService) {
             return ResponseEntity.badRequest().body(listOf(ex.message ?: "other error"))
         }
     }
-
-
 }

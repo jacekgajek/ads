@@ -20,7 +20,7 @@ import javax.persistence.criteria.Selection
 
 @Service
 class AdsService(private val repo: AdsRepository,
-                 @Value("\${com.jacekgajek.superdevs.initfile}") private val initFile: String,
+                 @Value("\${com.jacekgajek.ads.initfile}") private val initFile: String,
                  private val en: EntityManager) {
     private val log = LoggerFactory.getLogger(AdsService::class.java)
 
@@ -51,7 +51,7 @@ class AdsService(private val repo: AdsRepository,
         val builder = QueryBuilder(p, criteriaBuilder)
         val (query, aliases) = builder.build()
 
-        val queryResult: MutableList<Array<Any>>?
+        val queryResult: List<Array<Any>>?
         try {
             queryResult = en.createQuery(query).resultList
         } catch (ex: PersistenceException) {

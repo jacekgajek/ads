@@ -16,6 +16,6 @@ data class AdRecord(
         val clicks: Int,
         val impressions: Int)
 
-interface AdsRepository : JpaRepository<AdRecord, UUID> {
-}
+interface AdsRepository : JpaRepository<AdRecord, UUID>
+
 
