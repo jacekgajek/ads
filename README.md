@@ -24,7 +24,7 @@ Availible fields: `clicks`, `impressions`, `campaign`, `dataSource`, `daily` (ca
 2. Group with `groupBy` parameter
 3. Filter data with `filter` parameter (RSQL syntax)
 4. Select native aggregations (`sum`, `max`, `min`, `count`, `avg`)
-5. Add custom expression using selected values with `custom` parameter. Aggregations are accessible in format `[aggregation]_[field]`, for example `sum_clicks`. All used variables must be selected in previous steps.
+5. Add custom expression using selected values with `custom` parameter. Aggregations are accessible in format `[aggregation]_[field]`, for example `sum_clicks/sum_impressions`. All used variables must be selected in previous steps.
 6. Exclude unwanted fields which was used as intermediate values with `exclude` parameter
 
 See `sample_requests.http` for examples.
